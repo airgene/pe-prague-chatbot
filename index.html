@@ -1,3 +1,11 @@
+Here’s the updated `index.html` with the **embassy logo inserted in place of the star** and styled with a **clean DFA-style glow**.
+
+Use this as-is.
+Just make sure your logo image file is in the same folder as this HTML and named exactly:
+
+`PH Embassy Logo EN.png`
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -71,27 +79,30 @@
       margin-bottom: 20px;
     }
 
-    .seal {
-      width: 64px;
-      height: 64px;
+    .seal-logo {
+      width: 68px;
+      height: 68px;
+      object-fit: contain;
       border-radius: 50%;
+      padding: 3px;
       background:
-        radial-gradient(circle at 35% 30%, #fff9d8 0%, #fce991 32%, #f4cf39 58%, #d6af16 100%);
-      border: 3px solid white;
-      box-shadow: 0 8px 18px rgba(0,0,0,0.10);
-      position: relative;
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,0.98) 0%, rgba(248,250,253,0.92) 70%, rgba(243,246,250,0.88) 100%);
+      box-shadow:
+        0 0 0 3px rgba(255,255,255,0.98),
+        0 0 0 7px rgba(252, 209, 22, 0.34),
+        0 0 22px rgba(252, 209, 22, 0.28),
+        0 10px 22px rgba(0,0,0,0.14);
       flex-shrink: 0;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
     }
 
-    .seal::before {
-      content: "★";
-      position: absolute;
-      inset: 0;
-      display: grid;
-      place-items: center;
-      color: var(--blue);
-      font-size: 28px;
-      font-weight: 700;
+    .seal-logo:hover {
+      transform: scale(1.03);
+      box-shadow:
+        0 0 0 3px rgba(255,255,255,0.98),
+        0 0 0 8px rgba(252, 209, 22, 0.40),
+        0 0 26px rgba(252, 209, 22, 0.34),
+        0 12px 24px rgba(0,0,0,0.16);
     }
 
     .brand-title {
@@ -449,6 +460,10 @@
       .topbar-row { flex-direction: column; }
       .message { max-width: 100%; }
       .headline h2 { font-size: 26px; }
+      .seal-logo {
+        width: 62px;
+        height: 62px;
+      }
     }
   </style>
 </head>
@@ -460,7 +475,7 @@
           <div class="flag"></div>
 
           <div class="brand">
-            <div class="seal" aria-hidden="true"></div>
+            <img src="PH Embassy Logo EN.png" alt="Embassy of the Republic of the Philippines Prague" class="seal-logo">
             <div class="brand-title">
               <h1 id="sidebarTitle">Philippine Embassy Prague</h1>
               <p id="sidebarSubtitle">Czech Republic consular guidance</p>
@@ -522,7 +537,7 @@
 
           <div class="composer">
             <div class="composer-row">
-              <textarea id="input" placeholder="Ask about registration, passport renewal, civil registry, holidays, office hours, or embassy contact details..."></textarea>
+              <textarea id="input" placeholder="Ask about registration, passport renewal, ATN, OWWA, MWO Prague, holidays, office hours, or embassy contact details..."></textarea>
               <button class="send" id="sendBtn" type="button">Send</button>
             </div>
             <div class="foot" id="footText">
@@ -1223,3 +1238,4 @@ This chatbot provides general guidance only and does not provide legal advice or
   </script>
 </body>
 </html>
+```
