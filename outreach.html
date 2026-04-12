@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Prague Outreach Activities</title>
+  <title>Outreach Activities</title>
   <style>
     :root {
       --blue: #0038a8;
@@ -404,9 +404,9 @@
   <div class="page">
     <section class="hero">
       <div class="flag"></div>
-      <h1>Prague Outreach Activities</h1>
+      <h1>Outreach Activities</h1>
       <div class="subtitle">
-        Outreach activities, consular missions, and community events of the Philippine Embassy in Prague.
+        Outreach activities, consular missions, and community events of the Philippine Embassy in Warsaw.
       </div>
       <div class="toolbar">
         <input
@@ -504,44 +504,6 @@
         .replace(/'/g, "&#039;");
     }
 
-    function extractUrl(value) {
-      const str = String(value || "").trim();
-      if (!str) return "";
-
-      const imageFormulaMatch = str.match(/^=IMAGE\(\s*"([^"]+)"\s*\)$/i);
-      if (imageFormulaMatch) return imageFormulaMatch[1];
-
-      const quotedUrlMatch = str.match(/https?:\/\/[^\s",)]+/i);
-      if (quotedUrlMatch) return quotedUrlMatch[0];
-
-      return str;
-    }
-
-    function normalizeGoogleDriveUrl(value) {
-      const raw = extractUrl(value);
-      if (!raw) return "";
-
-      if (/^https?:\/\/[^ ]+\.(jpg|jpeg|png|gif|webp|svg)(\?.*)?$/i.test(raw)) {
-        return raw;
-      }
-
-      if (raw.includes("drive.google.com/uc?")) {
-        return raw;
-      }
-
-      let match = raw.match(/drive\.google\.com\/file\/d\/([^/]+)/i);
-      if (match && match[1]) {
-        return `https://drive.google.com/uc?export=view&id=${match[1]}`;
-      }
-
-      match = raw.match(/[?&]id=([a-zA-Z0-9_-]+)/i);
-      if (match && match[1]) {
-        return `https://drive.google.com/uc?export=view&id=${match[1]}`;
-      }
-
-      return raw;
-    }
-
     function formatDate(value) {
       if (!value) return "";
       const d = new Date(value);
@@ -554,9 +516,7 @@
     }
 
     function renderImageOrFallback(item, index) {
-      const imgSrc = normalizeGoogleDriveUrl(item.coverPhoto);
-
-      if (!imgSrc) {
+      if (!item.coverPhoto) {
         return `
           <div class="thumb-wrap" data-view-index="${index}">
             <div class="thumb-fallback">${escapeHtml(item.title || "Outreach Activity")}</div>
@@ -569,11 +529,10 @@
         <div class="thumb-wrap" data-view-index="${index}">
           <img
             class="thumb"
-            src="${escapeHtml(imgSrc)}"
+            src="${escapeHtml(item.coverPhoto)}"
             alt="${escapeHtml(item.title)}"
             loading="lazy"
-            referrerpolicy="no-referrer"
-            onerror="this.remove(); this.parentNode.insertAdjacentHTML('afterbegin', '<div class=&quot;thumb-fallback&quot;>${escapeHtml(item.title || "Outreach Activity")}</div>');"
+            onerror="this.style.display='none'; this.insertAdjacentHTML('afterend', '<div class=&quot;thumb-fallback&quot;>${escapeHtml(item.title || "Outreach Activity")}</div>');"
           />
           <div class="thumb-badge">Preview</div>
         </div>
@@ -607,7 +566,7 @@
             <p class="desc">${escapeHtml(item.description)}</p>
             <div class="actions">
               <button class="btn btn-primary preview-btn" type="button" data-view-index="${index}">View Slideshow</button>
-              <a class="btn btn-secondary" href="${escapeHtml(extractUrl(item.folderLink) || "#")}" target="_blank" rel="noopener noreferrer">Open Album</a>
+              <a class="btn btn-secondary" href="${escapeHtml(item.folderLink)}" target="_blank" rel="noopener noreferrer">Open Album</a>
             </div>
           </div>
         </article>
@@ -630,12 +589,12 @@
       const item = currentViewerItems[currentViewerIndex];
       if (!item) return;
 
-      viewerImageEl.src = normalizeGoogleDriveUrl(item.coverPhoto || "");
+      viewerImageEl.src = item.coverPhoto || "";
       viewerImageEl.alt = item.title || "Outreach image";
       viewerTitleEl.textContent = item.title || "Outreach Activity";
       viewerSubEl.textContent = [formatDate(item.date), item.location].filter(Boolean).join(" • ");
       viewerCountEl.textContent = `${currentViewerIndex + 1} / ${currentViewerItems.length}`;
-      viewerFolderLinkEl.href = extractUrl(item.folderLink) || "#";
+      viewerFolderLinkEl.href = item.folderLink || "#";
     }
 
     function openViewer(index) {
@@ -685,10 +644,7 @@
     }
 
     fetch(sheetURL)
-      .then(res => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.text();
-      })
+      .then(res => res.text())
       .then(csv => {
         const rows = csv.trim().split(/\r?\n/).slice(1);
 
@@ -711,7 +667,7 @@
         render(allItems);
       })
       .catch(error => {
-        console.error("Sheet load error:", error);
+        console.error(error);
         galleryEl.hidden = true;
         stateEl.hidden = false;
         stateEl.className = "error";
@@ -723,10 +679,6 @@
     viewerCloseEl.addEventListener("click", closeViewer);
     viewerNextEl.addEventListener("click", nextViewer);
     viewerPrevEl.addEventListener("click", prevViewer);
-
-    viewerImageEl.addEventListener("error", () => {
-      viewerImageEl.removeAttribute("src");
-    });
 
     viewerEl.addEventListener("click", (event) => {
       if (event.target === viewerEl) {
