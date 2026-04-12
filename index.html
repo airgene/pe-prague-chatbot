@@ -552,9 +552,19 @@
         website: "https://praguepe.dfa.gov.ph/",
         registrationLink: "https://praguepe.dfa.gov.ph/visa-and-consular-services/embassy-registration-of-filipino-national-in-the-czech-republic",
         passportUrl: "https://praguepe.dfa.gov.ph/visa-and-consular-services/passport",
+        passportAppointmentLink: "https://passport.gov.ph/appointment",
         visaUrl: "https://praguepe.dfa.gov.ph/visa-and-consular-services/visa",
         civilRegistryUrl: "https://praguepe.dfa.gov.ph/visa-and-consular-services/civil-registry",
         formsUrl: "https://praguepe.dfa.gov.ph/visa-and-consular-services/forms",
+        mwoPrague: {
+          website: "https://www.mwo-prague.org/",
+          facebook: "https://www.facebook.com/MWOPrague?ref=embed_page",
+          phone: "+420 244 401 147",
+          email1: "info@mwo-prague.org",
+          email2: "mwo_prague@dmw.gov.ph",
+          address: "Senovazne namesti 992/8, 110 00 Nove Mesto, Praha 1, Czech Republic",
+          owwaUrl: "https://www.mwo-prague.org/applyrenewalowwamembership"
+        },
         holidays2026: [
           { date: "2026-01-01", label: "New Year's Day" },
           { date: "2026-02-25", label: "EDSA People Power Revolution Anniversary" },
@@ -593,13 +603,16 @@
           badge2: "General Guidance Only",
           badge3: "Weekends and Holidays Closed",
           chipsLabel: "Quick questions",
-          inputPlaceholder: "Ask about registration, passport renewal, civil registry, holidays, office hours, or embassy contact details...",
+          inputPlaceholder: "Ask about registration, passport renewal, ATN, OWWA, MWO Prague, holidays, office hours, or embassy contact details...",
           sendBtn: "Send",
           resetBtn: "Reset chat",
           footText: "This assistant provides general guidance only. It does not provide legal advice or official decisions. For emergencies or case-specific concerns, contact the Embassy directly.",
           quickPrompts: [
             "How do I register with the Embassy?",
-            "How do I renew my passport?",
+            "How do I get a passport renewal appointment?",
+            "What is Assistance to Nationals?",
+            "How do I contact MWO Prague?",
+            "How do I renew my OWWA membership?",
             "What civil registry services are available?",
             "What forms are available?",
             "What are the embassy office hours?",
@@ -610,7 +623,8 @@
           services: [
             { icon: "📝", text: "Embassy registration" },
             { icon: "📘", text: "Passport services" },
-            { icon: "🛂", text: "Visa information" },
+            { icon: "🛟", text: "ATN / emergency guidance" },
+            { icon: "👷", text: "MWO Prague and OWWA support" },
             { icon: "📄", text: "Civil registry" },
             { icon: "✍️", text: "Forms and notarial guidance" }
           ],
@@ -619,14 +633,18 @@
 
 I can help with:
 • Embassy registration in the Czech Republic
-• Passport and visa information
+• Passport renewal appointments and passport guidance
+• Assistance to Nationals (ATN) for urgent cases
+• MWO Prague and OWWA membership / renewal information
 • Civil registry services
 • Forms and consular guidance
 • Embassy office hours, holidays, and contact details
 
 Quick guide:
 - Registration in Czechia → Embassy Registration
-- Passport renewal or lost passport → Passport page
+- Emergency or welfare case → ATN / contact the Embassy
+- Passport renewal → Passport appointment and passport page
+- OWWA concerns or OFW labor concerns → MWO Prague
 - Birth, marriage, and other civil registry matters → Civil Registry page
 - Affidavits and related documents → Forms page
 - Holidays and office schedule → Ask about holiday closures`,
@@ -646,13 +664,16 @@ Quick guide:
           badge2: "Pangkalahatang Gabay Lamang",
           badge3: "Sarado tuwing Weekend at Holidays",
           chipsLabel: "Mga mabilis na tanong",
-          inputPlaceholder: "Magtanong tungkol sa registration, passport renewal, civil registry, holidays, office hours, o contact details ng embahada...",
+          inputPlaceholder: "Magtanong tungkol sa registration, passport renewal, ATN, OWWA, MWO Prague, holidays, office hours, o contact details ng embahada...",
           sendBtn: "Ipadala",
           resetBtn: "I-reset ang chat",
           footText: "Ang assistant na ito ay nagbibigay lamang ng pangkalahatang gabay. Hindi ito nagbibigay ng legal advice o opisyal na pasya. Para sa emergency o partikular na kaso, makipag-ugnayan agad sa Embahada.",
           quickPrompts: [
             "Paano ako magrerehistro sa Embahada?",
-            "Paano ako magre-renew ng passport?",
+            "Paano ako kukuha ng passport renewal appointment?",
+            "Ano ang Assistance to Nationals?",
+            "Paano ko kokontakin ang MWO Prague?",
+            "Paano ako magre-renew ng OWWA membership?",
             "Anong civil registry services ang available?",
             "Anong mga forms ang available?",
             "Ano ang office hours ng embahada?",
@@ -663,7 +684,8 @@ Quick guide:
           services: [
             { icon: "📝", text: "Embassy registration" },
             { icon: "📘", text: "Passport services" },
-            { icon: "🛂", text: "Visa information" },
+            { icon: "🛟", text: "ATN / emergency guidance" },
+            { icon: "👷", text: "MWO Prague at OWWA support" },
             { icon: "📄", text: "Civil registry" },
             { icon: "✍️", text: "Forms at notarial guidance" }
           ],
@@ -672,14 +694,18 @@ Quick guide:
 
 Maaari akong tumulong sa:
 • Rehistrasyon sa Embahada sa Czech Republic
-• Passport at visa information
+• Passport renewal appointment at passport guidance
+• Assistance to Nationals (ATN) para sa mga agarang kaso
+• Impormasyon tungkol sa MWO Prague at OWWA membership / renewal
 • Civil registry services
 • Forms at consular guidance
 • Office hours, holidays, at contact details ng Embahada
 
 Mabilis na gabay:
 - Rehistrasyon sa Czechia → Embassy Registration
-- Passport renewal o lost passport → Passport page
+- Emergency o welfare case → ATN / kontakin ang Embahada
+- Passport renewal → Passport appointment at passport page
+- OWWA o labor concerns ng OFW → MWO Prague
 - Birth, marriage, at iba pang civil registry matters → Civil Registry page
 - Affidavits at kaugnay na dokumento → Forms page
 - Holidays at office schedule → Magtanong tungkol sa holiday closures`,
@@ -811,36 +837,165 @@ Mabilis na gabay:
           "ospital", "emergency case", "urgent case"
         ];
 
-        if (containsAny(text, emergencyWords)) {
+        if (containsAny(text, [
+          "assistance to nationals", "atn", "assistance to national",
+          "urgent help", "urgent concern", "welfare case"
+        ]) || containsAny(text, emergencyWords)) {
           return currentLang === "fil"
-            ? `Maaaring ito ay isang <strong>agarang consular case</strong>. Mangyaring makipag-ugnayan agad sa Embahada.<br><br>
-<strong>Ihanda ang mga sumusunod</strong>
+            ? `Ang <strong>Assistance to Nationals (ATN)</strong> ay para sa mga Pilipinong may agarang problema o emergency sa ibang bansa.<br><br>
+<strong>Halimbawa ng ATN cases</strong>
 <ul class="list">
-  <li>Buong pangalan ng taong sangkot</li>
-  <li>Passport details kung available</li>
-  <li>Eksaktong lokasyon sa Czech Republic</li>
-  <li>Contact number</li>
-  <li>Maikling paliwanag ng sitwasyon</li>
+  <li>Lost passport</li>
+  <li>Accident o hospitalization</li>
+  <li>Detention o arrest</li>
+  <li>Abuse o trafficking</li>
+  <li>Death o iba pang urgent welfare concerns</li>
+  <li>Stranded o distressed cases</li>
+</ul>
+<strong>Proseso ng ATN</strong>
+<ul class="list">
+  <li>Kontakin agad ang Philippine Embassy in Prague</li>
+  <li>Ihanda ang buong pangalan ng taong sangkot</li>
+  <li>Ihanda ang passport details kung available</li>
+  <li>Ibigay ang eksaktong lokasyon at contact number</li>
+  <li>Ipaliwanag nang maikli ang nangyari at anong tulong ang kailangan</li>
+  <li>Sundin ang instructions ng Embahada tungkol sa next steps at requirements</li>
 </ul>
 <strong>Contact details ng Embahada</strong><br>
 Phone 1: ${embassyInfo.phones.general1}<br>
 Phone 2: ${embassyInfo.phones.general2}<br>
 Email: <a href="mailto:${embassyInfo.phones.email}">${embassyInfo.phones.email}</a>
-<div class="mini-note">Ang chatbot na ito ay nagbibigay lamang ng pangkalahatang gabay at hindi legal advice o opisyal na pasya.</div>`
-            : `This may be an <strong>urgent consular case</strong>. Please contact the Embassy directly as soon as possible.<br><br>
-<strong>Prepare these details</strong>
+<div class="mini-note">Ang ATN ay para sa urgent welfare at emergency situations. Para sa routine consular services, gamitin ang tamang passport, civil registry, o forms pages.</div>`
+            : `The Embassy's <strong>Assistance to Nationals (ATN)</strong> service helps Filipinos facing urgent or emergency situations abroad.<br><br>
+<strong>Examples of ATN cases</strong>
 <ul class="list">
-  <li>Full name of the person concerned</li>
-  <li>Passport details if available</li>
-  <li>Exact location in the Czech Republic</li>
-  <li>Contact number</li>
-  <li>Short explanation of the situation</li>
+  <li>Lost passport</li>
+  <li>Accident or hospitalization</li>
+  <li>Detention or arrest</li>
+  <li>Abuse or trafficking</li>
+  <li>Death or other urgent welfare concerns</li>
+  <li>Stranded or distressed cases</li>
+</ul>
+<strong>ATN process</strong>
+<ul class="list">
+  <li>Contact the Philippine Embassy in Prague immediately</li>
+  <li>Prepare the person's full name, passport details if available, exact location, and contact number</li>
+  <li>Briefly explain what happened and what help is needed</li>
+  <li>Follow the Embassy's instructions on the next steps and required supporting documents</li>
 </ul>
 <strong>Embassy contact details</strong><br>
 Phone 1: ${embassyInfo.phones.general1}<br>
 Phone 2: ${embassyInfo.phones.general2}<br>
 Email: <a href="mailto:${embassyInfo.phones.email}">${embassyInfo.phones.email}</a>
-<div class="mini-note">This chatbot provides general guidance only and does not give legal advice or official decisions.</div>`;
+<div class="mini-note">ATN is for urgent welfare and emergency situations. For routine consular services, please use the proper passport, civil registry, or forms pages.</div>`;
+        }
+
+        if (containsAny(text, [
+          "passport appointment", "book passport appointment",
+          "passport renewal appointment", "how do i renew my passport",
+          "how do i get a passport appointment", "renew passport",
+          "passport renewal", "passport appointment system",
+          "passport schedule", "kukuha ng passport appointment",
+          "passport renewal appointment"
+        ])) {
+          return currentLang === "fil"
+            ? `Para sa <strong>passport renewal</strong>, kailangang kumuha ng appointment sa DFA Online Passport Appointment System at tingnan muna ang passport requirements page ng Philippine Embassy in Prague.<br><br>
+<strong>Proseso ng passport renewal</strong>
+<ul class="list">
+  <li>Suriin muna ang requirements sa Embassy passport page</li>
+  <li>Mag-book ng appointment online sa DFA passport appointment system</li>
+  <li>Kompletuhin ang application form at ihanda ang lahat ng documentary requirements</li>
+  <li>Dumalo sa Embahada sa iyong confirmed appointment date at time</li>
+  <li>Dalhin ang current passport at lahat ng kinakailangang supporting documents</li>
+</ul>
+<strong>Official links</strong><br>
+Passport appointment system: <a href="${embassyInfo.passportAppointmentLink}" target="_blank" rel="noreferrer">DFA Passport Appointment System</a><br>
+Passport requirements page: <a href="${embassyInfo.passportUrl}" target="_blank" rel="noreferrer">Philippine Embassy Prague Passport Page</a><br><br>
+<div class="mini-note">Basahing mabuti ang requirements ng Embahada bago mag-book o pumunta sa appointment.</div>`
+            : `For <strong>passport renewal</strong>, applicants should secure an appointment through the DFA Online Passport Appointment System and review the Philippine Embassy in Prague passport requirements page before appearing at the Embassy.<br><br>
+<strong>Passport renewal process</strong>
+<ul class="list">
+  <li>Check the Embassy's passport requirements page</li>
+  <li>Book an appointment online through the DFA passport appointment system</li>
+  <li>Complete the required passport application form and prepare all documentary requirements</li>
+  <li>Appear at the Embassy on your confirmed appointment date and time</li>
+  <li>Bring your current passport and all required supporting documents</li>
+</ul>
+<strong>Official links</strong><br>
+Passport appointment system: <a href="${embassyInfo.passportAppointmentLink}" target="_blank" rel="noreferrer">DFA Passport Appointment System</a><br>
+Passport requirements page: <a href="${embassyInfo.passportUrl}" target="_blank" rel="noreferrer">Philippine Embassy Prague Passport Page</a><br><br>
+<div class="mini-note">Please review the Embassy's posted passport requirements carefully before booking or attending your appointment.</div>`;
+        }
+
+        if (containsAny(text, [
+          "mwo prague", "contact mwo", "how do i contact mwo",
+          "migrant workers office", "owwa prague", "labor office",
+          "kontakin ang mwo", "mwo"
+        ])) {
+          return currentLang === "fil"
+            ? `Para sa labor-related at OFW welfare concerns, maaari ninyong kontakin ang <strong>MWO Prague</strong>.<br><br>
+<strong>Official contact details ng MWO Prague</strong><br>
+Website: <a href="${embassyInfo.mwoPrague.website}" target="_blank" rel="noreferrer">MWO Prague Official Website</a><br>
+Facebook: <a href="${embassyInfo.mwoPrague.facebook}" target="_blank" rel="noreferrer">MWO Prague Official Facebook Page</a><br>
+Phone: ${embassyInfo.mwoPrague.phone}<br>
+Email 1: <a href="mailto:${embassyInfo.mwoPrague.email1}">${embassyInfo.mwoPrague.email1}</a><br>
+Email 2: <a href="mailto:${embassyInfo.mwoPrague.email2}">${embassyInfo.mwoPrague.email2}</a><br><br>
+<strong>Office address</strong><br>
+${embassyInfo.mwoPrague.address}<br><br>
+<div class="mini-note">Ang MWO Prague ay tumutulong sa labor-related services at OFW welfare concerns gaya ng contract verification at welfare support.</div>`
+            : `For labor-related and OFW welfare concerns, you may contact <strong>MWO Prague</strong>.<br><br>
+<strong>MWO Prague official contact details</strong><br>
+Website: <a href="${embassyInfo.mwoPrague.website}" target="_blank" rel="noreferrer">MWO Prague Official Website</a><br>
+Facebook: <a href="${embassyInfo.mwoPrague.facebook}" target="_blank" rel="noreferrer">MWO Prague Official Facebook Page</a><br>
+Phone: ${embassyInfo.mwoPrague.phone}<br>
+Email 1: <a href="mailto:${embassyInfo.mwoPrague.email1}">${embassyInfo.mwoPrague.email1}</a><br>
+Email 2: <a href="mailto:${embassyInfo.mwoPrague.email2}">${embassyInfo.mwoPrague.email2}</a><br><br>
+<strong>Office address</strong><br>
+${embassyInfo.mwoPrague.address}<br><br>
+<div class="mini-note">MWO Prague handles labor-related services and OFW support such as contract verification, job order certification, and welfare support.</div>`;
+        }
+
+        if (containsAny(text, [
+          "owwa", "owwa renewal", "owwa membership",
+          "renew owwa", "how do i renew my owwa membership",
+          "apply owwa", "membership renewal", "owwa member",
+          "mag renew ng owwa", "owwa membership renewal"
+        ])) {
+          return currentLang === "fil"
+            ? `Para sa <strong>OWWA membership o renewal</strong>, maaaring dumaan sa <strong>MWO–OWWA Prague</strong>.<br><br>
+<strong>OWWA membership / renewal process</strong>
+<ul class="list">
+  <li>Maaaring mag-walk in sa MWO–OWWA Prague Office</li>
+  <li>May online form at mobile app option din kung hindi makapunta nang personal</li>
+  <li>Ihanda ang iyong employment at identification documents ayon sa instructions sa official page</li>
+  <li>Hintayin ang review at processing ng MWO–OWWA Prague staff</li>
+</ul>
+<strong>Official links</strong><br>
+OWWA membership / renewal page: <a href="${embassyInfo.mwoPrague.owwaUrl}" target="_blank" rel="noreferrer">Apply / Renew OWWA Membership</a><br>
+MWO Prague website: <a href="${embassyInfo.mwoPrague.website}" target="_blank" rel="noreferrer">MWO Prague Official Website</a><br>
+Facebook: <a href="${embassyInfo.mwoPrague.facebook}" target="_blank" rel="noreferrer">MWO Prague Official Facebook Page</a><br><br>
+<strong>Contact details</strong><br>
+Phone: ${embassyInfo.mwoPrague.phone}<br>
+Email 1: <a href="mailto:${embassyInfo.mwoPrague.email1}">${embassyInfo.mwoPrague.email1}</a><br>
+Email 2: <a href="mailto:${embassyInfo.mwoPrague.email2}">${embassyInfo.mwoPrague.email2}</a><br><br>
+<div class="mini-note">Ayon sa official MWO Prague page, maaari ang walk-in at may mobile app option para sa OWWA application o renewal.</div>`
+            : `For <strong>OWWA membership or renewal</strong>, you may process this through <strong>MWO–OWWA Prague</strong>.<br><br>
+<strong>OWWA membership / renewal process</strong>
+<ul class="list">
+  <li>You may visit the MWO–OWWA Prague Office as a walk-in applicant</li>
+  <li>There is also an online form and mobile app option if you cannot visit in person</li>
+  <li>Prepare your employment and identification documents based on the instructions on the official page</li>
+  <li>The MWO–OWWA Prague staff will review your requirements and process your application or renewal</li>
+</ul>
+<strong>Official links</strong><br>
+OWWA membership / renewal page: <a href="${embassyInfo.mwoPrague.owwaUrl}" target="_blank" rel="noreferrer">Apply / Renew OWWA Membership</a><br>
+MWO Prague website: <a href="${embassyInfo.mwoPrague.website}" target="_blank" rel="noreferrer">MWO Prague Official Website</a><br>
+Facebook: <a href="${embassyInfo.mwoPrague.facebook}" target="_blank" rel="noreferrer">MWO Prague Official Facebook Page</a><br><br>
+<strong>Contact details</strong><br>
+Phone: ${embassyInfo.mwoPrague.phone}<br>
+Email 1: <a href="mailto:${embassyInfo.mwoPrague.email1}">${embassyInfo.mwoPrague.email1}</a><br>
+Email 2: <a href="mailto:${embassyInfo.mwoPrague.email2}">${embassyInfo.mwoPrague.email2}</a><br><br>
+<div class="mini-note">According to the official MWO Prague page, applicants may renew by walk-in and may also use the mobile app option if unable to visit the office in person.</div>`;
         }
 
         if (containsAny(text, ["open today", "is the embassy open", "are you open today", "office open today", "bukas ba", "open ba"])) {
@@ -913,14 +1068,14 @@ Use the official registration page here:<br>
 <a href="${embassyInfo.registrationLink}" target="_blank" rel="noreferrer">Embassy Registration</a>`;
         }
 
-        if (containsAny(text, ["passport", "renew passport", "lost passport", "travel document", "passport renewal"])) {
+        if (containsAny(text, ["passport", "travel document", "lost passport guidance"])) {
           return currentLang === "fil"
             ? `Para sa passport renewal, lost passport guidance, at travel document information, gamitin ang opisyal na passport page ng Embahada:<br><br>
 <a href="${embassyInfo.passportUrl}" target="_blank" rel="noreferrer">Passport Services</a><br><br>
-Maaari ring direktang makipag-ugnayan sa Embahada para sa case-specific guidance.`
+Kung kailangan ninyo ng appointment, magtanong: <em>Paano ako kukuha ng passport renewal appointment?</em>`
             : `For passport renewal, lost passport guidance, and travel document information, please use the Embassy's official passport page:<br><br>
 <a href="${embassyInfo.passportUrl}" target="_blank" rel="noreferrer">Passport Services</a><br><br>
-You may also contact the Embassy directly for case-specific guidance.`;
+If you need an appointment, ask: <em>How do I get a passport renewal appointment?</em>`;
         }
 
         if (containsAny(text, ["visa"])) {
@@ -997,7 +1152,9 @@ Official website: <a href="${embassyInfo.website}" target="_blank" rel="noreferr
           ? `Maaari akong tumulong sa mga paksang ito:
 <ul class="list">
   <li>Embassy registration sa Czech Republic</li>
-  <li>Passport at visa information</li>
+  <li>Passport renewal appointment at passport information</li>
+  <li>Assistance to Nationals (ATN) para sa urgent cases</li>
+  <li>MWO Prague at OWWA membership / renewal</li>
   <li>Civil registry services</li>
   <li>Forms at pangkalahatang consular guidance</li>
   <li>Office hours, holiday closures, at contact details</li>
@@ -1006,7 +1163,9 @@ Ang chatbot na ito ay nagbibigay lamang ng pangkalahatang gabay at hindi legal a
           : `I can help with these topics:
 <ul class="list">
   <li>Embassy registration in the Czech Republic</li>
-  <li>Passport and visa information</li>
+  <li>Passport renewal appointments and passport information</li>
+  <li>Assistance to Nationals (ATN) for urgent cases</li>
+  <li>MWO Prague and OWWA membership / renewal</li>
   <li>Civil registry services</li>
   <li>Forms and general consular guidance</li>
   <li>Office hours, holiday closures, and contact details</li>
