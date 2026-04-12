@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Philippine Embassy Prague Virtual Assistant</title>
+  <style>
+    :root {
+      --blue: #0038a8;
+      --blue-2: #0a4bc5;
+      --red: #ce1126;
+      --yellow: #fcd116;
+      --ink: #17304f;
+      --muted: #667992;
+      --line: #d9e4f2;
+      --bg: #eef4fb;
+      --card: rgba(255,255,255,0.94);
+      --soft: #f8fbff;
+      --soft-blue: #ecf4ff;
+      --soft-red: #fff3f4;
+      --shadow: 0 20px 48px rgba(19, 46, 79, 0.12);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(252, 209, 22, 0.13), transparent 24%),
+        radial-gradient(circle at top right, rgba(0, 56, 168, 0.10), transparent 26%),
+        linear-gradient(180deg, #f8fbff 0%, #edf4fb 100%);
+      padding: 20px;
+    }
+
+    .shell {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .app {
+      background: var(--card);
+      border: 1px solid rgba(217, 228, 242, 0.95);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      min-height: 760px;
+    }
+
+    .sidebar {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(244,248,255,0.96) 100%);
+      border-right: 1px solid var(--line);
+      padding: 22px 18px 20px;
+    }
+
+    .brand {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .seal {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 35% 30%, #fff9d8 0%, #fce991 32%, #f4cf39 58%, #d6af16 100%);
+      border: 3px solid white;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.10);
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .seal::before {
+      content: "★";
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      color: var(--blue);
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .brand-title {
+      min-width: 0;
+    }
+
+    .brand-title h1 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.15;
+      color: var(--blue);
+      letter-spacing: -0.02em;
+    }
+
+    .brand-title p {
+      margin: 5px 0 0;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .flag {
+      height: 10px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--blue) 0 44%, white 44% 56%, var(--red) 56% 100%);
+      border: 1px solid #d8e1ee;
+      margin-bottom: 16px;
+    }
+
+    .lang-toggle {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .lang-btn {
+      flex: 1;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 10px 12px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+      transition: 0.18s ease;
+    }
+
+    .lang-btn.active {
+      background: linear-gradient(180deg, var(--blue-2), var(--blue));
+      color: white;
+      border-color: transparent;
+      box-shadow: 0 10px 18px rgba(0, 56, 168, 0.18);
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255,255,255,0.9);
+      padding: 14px;
+      margin-bottom: 12px;
+      box-shadow: 0 8px 18px rgba(18, 42, 73, 0.04);
+    }
+
+    .panel-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--blue);
+      margin-bottom: 8px;
+    }
+
+    .panel-text {
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--ink);
+    }
+
+    .service-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .service-item {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 10px 11px;
+      background: var(--soft);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      background: var(--soft-blue);
+      color: var(--blue);
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+
+    .main {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .topbar {
+      padding: 22px 22px 16px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(245,249,255,0.95) 100%);
+    }
+
+    .topbar-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .headline {
+      min-width: 0;
+    }
+
+    .headline h2 {
+      margin: 0;
+      font-size: 30px;
+      line-height: 1.08;
+      color: var(--blue);
+      letter-spacing: -0.03em;
+    }
+
+    .headline p {
+      margin: 10px 0 0;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--muted);
+      max-width: 760px;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .badge {
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      background: #fff;
+      color: var(--ink);
+    }
+
+    .reset {
+      border: 1px solid var(--line);
+      background: white;
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 11px 15px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+      transition: 0.18s ease;
+    }
+
+    .reset:hover {
+      background: #f8fbff;
+      transform: translateY(-1px);
+    }
+
+    .chips-wrap {
+      padding: 16px 20px 0;
+      background: rgba(255,255,255,0.88);
+    }
+
+    .chips-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .chip {
+      border: 1px solid #d7e4f4;
+      background: linear-gradient(180deg, #f8fbff 0%, #eef5ff 100%);
+      color: var(--blue);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.18s ease;
+      box-shadow: 0 4px 10px rgba(0, 56, 168, 0.05);
+    }
+
+    .chip:hover {
+      background: #e9f2ff;
+      transform: translateY(-1px);
+    }
+
+    .messages {
+      flex: 1;
+      height: 460px;
+      overflow: auto;
+      padding: 18px 20px;
+      background: linear-gradient(180deg, #f4f8fd 0%, #eef4fb 100%);
+    }
+
+    .message {
+      max-width: 84%;
+      padding: 14px 15px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+      line-height: 1.62;
+      white-space: pre-wrap;
+      font-size: 14px;
+      word-wrap: break-word;
+      box-shadow: 0 10px 18px rgba(19, 42, 74, 0.05);
+    }
+
+    .assistant {
+      background: #fff;
+      border: 1px solid #dce7f4;
+      border-top-left-radius: 8px;
+    }
+
+    .user {
+      margin-left: auto;
+      background: linear-gradient(180deg, #eef4ff 0%, #e4eeff 100%);
+      border: 1px solid #c8d9ff;
+      border-top-right-radius: 8px;
+    }
+
+    .meta {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 7px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .composer {
+      padding: 16px 18px 18px;
+      border-top: 1px solid var(--line);
+      background: rgba(255,255,255,0.96);
+    }
+
+    .composer-row {
+      display: flex;
+      gap: 12px;
+      align-items: flex-end;
+    }
+
+    textarea {
+      flex: 1;
+      min-height: 64px;
+      max-height: 180px;
+      resize: vertical;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      padding: 14px 15px;
+      font: inherit;
+      color: var(--ink);
+      outline: none;
+      font-size: 14px;
+      background: #fff;
+    }
+
+    textarea:focus {
+      border-color: #8eb6ff;
+      box-shadow: 0 0 0 4px rgba(0, 56, 168, 0.08);
+    }
+
+    .send {
+      border: none;
+      background: linear-gradient(180deg, var(--blue-2) 0%, var(--blue) 100%);
+      color: white;
+      border-radius: 16px;
+      padding: 14px 18px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+      min-width: 94px;
+      box-shadow: 0 10px 18px rgba(0, 56, 168, 0.18);
+      transition: 0.18s ease;
+    }
+
+    .send:hover {
+      transform: translateY(-1px);
+      filter: brightness(0.98);
+    }
+
+    .foot {
+      margin-top: 10px;
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .list, .holiday-list {
+      margin: 8px 0 0;
+      padding-left: 18px;
+    }
+
+    .list li, .holiday-list li {
+      margin-bottom: 6px;
+    }
+
+    .mini-note {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: var(--soft-blue);
+      border: 1px solid #d9e7ff;
+      font-size: 12px;
+      color: var(--ink);
+    }
+
+    a { color: var(--blue); }
+
+    @media (max-width: 980px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--line);
+      }
+    }
+
+    @media (max-width: 720px) {
+      body { padding: 10px; }
+      .topbar-row { flex-direction: column; }
+      .message { max-width: 100%; }
+      .headline h2 { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="app">
+      <div class="layout">
+        <aside class="sidebar">
+          <div class="flag"></div>
+
+          <div class="brand">
+            <div class="seal" aria-hidden="true"></div>
+            <div class="brand-title">
+              <h1 id="sidebarTitle">Philippine Embassy Prague</h1>
+              <p id="sidebarSubtitle">Czech Republic consular guidance</p>
+            </div>
+          </div>
+
+          <div class="lang-toggle">
+            <button class="lang-btn active" id="langEnBtn" type="button">English</button>
+            <button class="lang-btn" id="langFilBtn" type="button">Filipino</button>
+          </div>
+
+          <div class="panel">
+            <div class="panel-title" id="coverageTitle">Coverage</div>
+            <div class="panel-text" id="coverageText">Czech Republic</div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-title" id="serviceTitle">Key Services</div>
+            <div class="service-list" id="serviceList"></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-title" id="contactTitle">Embassy Contact</div>
+            <div class="panel-text">
+              Senovážné náměstí 8, 110 00 Praha 1<br><br>
+              +420 224 216 397<br>
+              +420 224 216 385<br>
+              prague.pe@dfa.gov.ph
+            </div>
+          </div>
+        </aside>
+
+        <main class="main">
+          <div class="topbar">
+            <div class="topbar-row">
+              <div class="headline">
+                <h2 id="headlineTitle">Embassy Virtual Assistant</h2>
+                <p id="headlineSubtitle">
+                  Guidance for Filipinos in the Czech Republic on embassy registration,
+                  passport and consular services, civil registry concerns, holiday closures,
+                  and official contact details for the Philippine Embassy in Prague.
+                </p>
+                <div class="badge-row">
+                  <div class="badge" id="badge1">Prague, Czech Republic</div>
+                  <div class="badge" id="badge2">General Guidance Only</div>
+                  <div class="badge" id="badge3">Weekends and Holidays Closed</div>
+                </div>
+              </div>
+              <button class="reset" id="resetBtn" type="button">Reset chat</button>
+            </div>
+          </div>
+
+          <div class="chips-wrap">
+            <div class="chips-label" id="chipsLabel">Quick questions</div>
+            <div class="chips" id="chips"></div>
+          </div>
+
+          <div class="messages" id="messages"></div>
+
+          <div class="composer">
+            <div class="composer-row">
+              <textarea id="input" placeholder="Ask about registration, passport renewal, civil registry, holidays, office hours, or embassy contact details..."></textarea>
+              <button class="send" id="sendBtn" type="button">Send</button>
+            </div>
+            <div class="foot" id="footText">
+              This assistant provides general guidance only. It does not provide legal advice or official decisions.
+              For emergencies or case-specific concerns, contact the Embassy directly.
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    window.addEventListener("DOMContentLoaded", function () {
+      const embassyInfo = {
+        name: "Embassy of the Republic of the Philippines in Prague",
+        address: "Senovážné náměstí 8, 110 00 Praha 1, Czech Republic",
+        coverage: ["Czech Republic"],
+        officeHours: "Monday to Friday, 9:00 a.m. to 6:00 p.m.",
+        consularHours: "Monday to Friday, 9:00 a.m. to 12:00 noon and by appointment",
+        phones: {
+          general1: "+420 224 216 397",
+          general2: "+420 224 216 385",
+          fax: "+420 224 216 390",
+          email: "prague.pe@dfa.gov.ph"
+        },
+        website: "https://praguepe.dfa.gov.ph/",
+        registrationLink: "https://praguepe.dfa.gov.ph/visa-and-consular-services/embassy-registration-of-filipino-national-in-the-czech-republic",
+        passportUrl: "https://praguepe.dfa.gov.ph/visa-and-consular-services/passport",
+        visaUrl: "https://praguepe.dfa.gov.ph/visa-and-consular-services/visa",
+        civilRegistryUrl: "https://praguepe.dfa.gov.ph/visa-and-consular-services/civil-registry",
+        formsUrl: "https://praguepe.dfa.gov.ph/visa-and-consular-services/forms",
+        holidays2026: [
+          { date: "2026-01-01", label: "New Year's Day" },
+          { date: "2026-02-25", label: "EDSA People Power Revolution Anniversary" },
+          { date: "2026-04-02", label: "Maundy Thursday" },
+          { date: "2026-04-03", label: "Good Friday" },
+          { date: "2026-04-06", label: "Easter Monday" },
+          { date: "2026-05-01", label: "Labor Day" },
+          { date: "2026-05-08", label: "Liberation Day" },
+          { date: "2026-06-12", label: "PH Independence Day" },
+          { date: "2026-07-06", label: "Jan Hus Day" },
+          { date: "2026-08-21", label: "Ninoy Aquino Day" },
+          { date: "2026-08-31", label: "National Heroes Day" },
+          { date: "2026-09-28", label: "Statehood Day" },
+          { date: "2026-10-28", label: "Czechoslovak State Day" },
+          { date: "2026-11-02", label: "All Soul's Day" },
+          { date: "2026-11-17", label: "Freedom and Democracy Day" },
+          { date: "2026-11-30", label: "Bonifacio Day" },
+          { date: "2026-12-24", label: "Christmas Eve" },
+          { date: "2026-12-25", label: "Christmas Day" },
+          { date: "2026-12-30", label: "Rizal Day" },
+          { date: "2026-12-31", label: "Last day of the Year" }
+        ]
+      };
+
+      const uiText = {
+        en: {
+          sidebarTitle: "Philippine Embassy Prague",
+          sidebarSubtitle: "Czech Republic consular guidance",
+          coverageTitle: "Coverage",
+          coverageText: "Czech Republic",
+          serviceTitle: "Key Services",
+          contactTitle: "Embassy Contact",
+          headlineTitle: "Embassy Virtual Assistant",
+          headlineSubtitle: "Guidance for Filipinos in the Czech Republic on embassy registration, passport and consular services, civil registry concerns, holiday closures, and official contact details for the Philippine Embassy in Prague.",
+          badge1: "Prague, Czech Republic",
+          badge2: "General Guidance Only",
+          badge3: "Weekends and Holidays Closed",
+          chipsLabel: "Quick questions",
+          inputPlaceholder: "Ask about registration, passport renewal, civil registry, holidays, office hours, or embassy contact details...",
+          sendBtn: "Send",
+          resetBtn: "Reset chat",
+          footText: "This assistant provides general guidance only. It does not provide legal advice or official decisions. For emergencies or case-specific concerns, contact the Embassy directly.",
+          quickPrompts: [
+            "How do I register with the Embassy?",
+            "How do I renew my passport?",
+            "What civil registry services are available?",
+            "What forms are available?",
+            "What are the embassy office hours?",
+            "Is the embassy open today?",
+            "What are the 2026 holidays?",
+            "What are the embassy contact details?"
+          ],
+          services: [
+            { icon: "📝", text: "Embassy registration" },
+            { icon: "📘", text: "Passport services" },
+            { icon: "🛂", text: "Visa information" },
+            { icon: "📄", text: "Civil registry" },
+            { icon: "✍️", text: "Forms and notarial guidance" }
+          ],
+          welcomeMessage:
+`Magandang araw. I am the Embassy Virtual Assistant for the Philippine Embassy in Prague.
+
+I can help with:
+• Embassy registration in the Czech Republic
+• Passport and visa information
+• Civil registry services
+• Forms and consular guidance
+• Embassy office hours, holidays, and contact details
+
+Quick guide:
+- Registration in Czechia → Embassy Registration
+- Passport renewal or lost passport → Passport page
+- Birth, marriage, and other civil registry matters → Civil Registry page
+- Affidavits and related documents → Forms page
+- Holidays and office schedule → Ask about holiday closures`,
+          assistantLabel: "Embassy Assistant",
+          userLabel: "You"
+        },
+        fil: {
+          sidebarTitle: "Embahada ng Pilipinas sa Prague",
+          sidebarSubtitle: "Gabay sa serbisyong konsular sa Czech Republic",
+          coverageTitle: "Saklaw",
+          coverageText: "Czech Republic",
+          serviceTitle: "Pangunahing Serbisyo",
+          contactTitle: "Kontak ng Embahada",
+          headlineTitle: "Virtual Assistant ng Embahada",
+          headlineSubtitle: "Gabay para sa mga Pilipino sa Czech Republic tungkol sa rehistrasyon sa embahada, passport at consular services, civil registry concerns, holiday closures, at opisyal na contact details ng Philippine Embassy sa Prague.",
+          badge1: "Prague, Czech Republic",
+          badge2: "Pangkalahatang Gabay Lamang",
+          badge3: "Sarado tuwing Weekend at Holidays",
+          chipsLabel: "Mga mabilis na tanong",
+          inputPlaceholder: "Magtanong tungkol sa registration, passport renewal, civil registry, holidays, office hours, o contact details ng embahada...",
+          sendBtn: "Ipadala",
+          resetBtn: "I-reset ang chat",
+          footText: "Ang assistant na ito ay nagbibigay lamang ng pangkalahatang gabay. Hindi ito nagbibigay ng legal advice o opisyal na pasya. Para sa emergency o partikular na kaso, makipag-ugnayan agad sa Embahada.",
+          quickPrompts: [
+            "Paano ako magrerehistro sa Embahada?",
+            "Paano ako magre-renew ng passport?",
+            "Anong civil registry services ang available?",
+            "Anong mga forms ang available?",
+            "Ano ang office hours ng embahada?",
+            "Bukas ba ang embahada ngayon?",
+            "Ano ang mga holiday sa 2026?",
+            "Ano ang contact details ng embahada?"
+          ],
+          services: [
+            { icon: "📝", text: "Embassy registration" },
+            { icon: "📘", text: "Passport services" },
+            { icon: "🛂", text: "Visa information" },
+            { icon: "📄", text: "Civil registry" },
+            { icon: "✍️", text: "Forms at notarial guidance" }
+          ],
+          welcomeMessage:
+`Magandang araw. Ako ang Virtual Assistant para sa Philippine Embassy sa Prague.
+
+Maaari akong tumulong sa:
+• Rehistrasyon sa Embahada sa Czech Republic
+• Passport at visa information
+• Civil registry services
+• Forms at consular guidance
+• Office hours, holidays, at contact details ng Embahada
+
+Mabilis na gabay:
+- Rehistrasyon sa Czechia → Embassy Registration
+- Passport renewal o lost passport → Passport page
+- Birth, marriage, at iba pang civil registry matters → Civil Registry page
+- Affidavits at kaugnay na dokumento → Forms page
+- Holidays at office schedule → Magtanong tungkol sa holiday closures`,
+          assistantLabel: "Embassy Assistant",
+          userLabel: "Ikaw"
+        }
+      };
+
+      let currentLang = "en";
+
+      const messagesEl = document.getElementById("messages");
+      const inputEl = document.getElementById("input");
+      const sendBtn = document.getElementById("sendBtn");
+      const resetBtn = document.getElementById("resetBtn");
+      const chipsEl = document.getElementById("chips");
+      const langEnBtn = document.getElementById("langEnBtn");
+      const langFilBtn = document.getElementById("langFilBtn");
+
+      function t() {
+        return uiText[currentLang];
+      }
+
+      function containsAny(text, words) {
+        return words.some(function (word) {
+          return text.includes(word);
+        });
+      }
+
+      function getTodayISO() {
+        const now = new Date();
+        const y = now.getFullYear();
+        const m = String(now.getMonth() + 1).padStart(2, "0");
+        const d = String(now.getDate()).padStart(2, "0");
+        return `${y}-${m}-${d}`;
+      }
+
+      function getHolidayByDate(isoDate) {
+        return embassyInfo.holidays2026.find(function (h) {
+          return h.date === isoDate;
+        }) || null;
+      }
+
+      function isWeekend(dateObj) {
+        const day = dateObj.getDay();
+        return day === 0 || day === 6;
+      }
+
+      function formatHolidayList() {
+        return embassyInfo.holidays2026.map(function (h) {
+          return `<li><strong>${h.date}</strong> — ${h.label}</li>`;
+        }).join("");
+      }
+
+      function addMessage(role, text) {
+        const wrapper = document.createElement("div");
+        wrapper.className = `message ${role}`;
+
+        const meta = document.createElement("div");
+        meta.className = "meta";
+        meta.textContent = role === "assistant" ? t().assistantLabel : t().userLabel;
+
+        const body = document.createElement("div");
+        body.innerHTML = String(text).replace(/\n/g, "<br>");
+
+        wrapper.appendChild(meta);
+        wrapper.appendChild(body);
+        messagesEl.appendChild(wrapper);
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+      }
+
+      function renderServices() {
+        const serviceList = document.getElementById("serviceList");
+        serviceList.innerHTML = "";
+        t().services.forEach(function (item) {
+          const el = document.createElement("div");
+          el.className = "service-item";
+          el.innerHTML = `<div class="icon">${item.icon}</div><div>${item.text}</div>`;
+          serviceList.appendChild(el);
+        });
+      }
+
+      function renderChips() {
+        chipsEl.innerHTML = "";
+        t().quickPrompts.forEach(function (prompt) {
+          const btn = document.createElement("button");
+          btn.className = "chip";
+          btn.type = "button";
+          btn.textContent = prompt;
+          btn.addEventListener("click", function () {
+            sendMessage(prompt);
+          });
+          chipsEl.appendChild(btn);
+        });
+      }
+
+      function renderStaticText() {
+        document.getElementById("sidebarTitle").textContent = t().sidebarTitle;
+        document.getElementById("sidebarSubtitle").textContent = t().sidebarSubtitle;
+        document.getElementById("coverageTitle").textContent = t().coverageTitle;
+        document.getElementById("coverageText").textContent = t().coverageText;
+        document.getElementById("serviceTitle").textContent = t().serviceTitle;
+        document.getElementById("contactTitle").textContent = t().contactTitle;
+        document.getElementById("headlineTitle").textContent = t().headlineTitle;
+        document.getElementById("headlineSubtitle").textContent = t().headlineSubtitle;
+        document.getElementById("badge1").textContent = t().badge1;
+        document.getElementById("badge2").textContent = t().badge2;
+        document.getElementById("badge3").textContent = t().badge3;
+        document.getElementById("chipsLabel").textContent = t().chipsLabel;
+        document.getElementById("footText").textContent = t().footText;
+        inputEl.placeholder = t().inputPlaceholder;
+        sendBtn.textContent = t().sendBtn;
+        resetBtn.textContent = t().resetBtn;
+
+        langEnBtn.classList.toggle("active", currentLang === "en");
+        langFilBtn.classList.toggle("active", currentLang === "fil");
+
+        renderServices();
+        renderChips();
+      }
+
+      function answerFor(rawInput) {
+        const text = String(rawInput).toLowerCase();
+
+        const emergencyWords = [
+          "emergency", "detained", "detention", "abuse", "hospital",
+          "hospitalization", "accident", "trafficking", "death",
+          "stranded", "urgent", "arrested", "lost passport",
+          "passport lost", "missing", "nasaan", "nawala", "naaresto",
+          "ospital", "emergency case", "urgent case"
+        ];
+
+        if (containsAny(text, emergencyWords)) {
+          return currentLang === "fil"
+            ? `Maaaring ito ay isang <strong>agarang consular case</strong>. Mangyaring makipag-ugnayan agad sa Embahada.<br><br>
+<strong>Ihanda ang mga sumusunod</strong>
+<ul class="list">
+  <li>Buong pangalan ng taong sangkot</li>
+  <li>Passport details kung available</li>
+  <li>Eksaktong lokasyon sa Czech Republic</li>
+  <li>Contact number</li>
+  <li>Maikling paliwanag ng sitwasyon</li>
+</ul>
+<strong>Contact details ng Embahada</strong><br>
+Phone 1: ${embassyInfo.phones.general1}<br>
+Phone 2: ${embassyInfo.phones.general2}<br>
+Email: <a href="mailto:${embassyInfo.phones.email}">${embassyInfo.phones.email}</a>
+<div class="mini-note">Ang chatbot na ito ay nagbibigay lamang ng pangkalahatang gabay at hindi legal advice o opisyal na pasya.</div>`
+            : `This may be an <strong>urgent consular case</strong>. Please contact the Embassy directly as soon as possible.<br><br>
+<strong>Prepare these details</strong>
+<ul class="list">
+  <li>Full name of the person concerned</li>
+  <li>Passport details if available</li>
+  <li>Exact location in the Czech Republic</li>
+  <li>Contact number</li>
+  <li>Short explanation of the situation</li>
+</ul>
+<strong>Embassy contact details</strong><br>
+Phone 1: ${embassyInfo.phones.general1}<br>
+Phone 2: ${embassyInfo.phones.general2}<br>
+Email: <a href="mailto:${embassyInfo.phones.email}">${embassyInfo.phones.email}</a>
+<div class="mini-note">This chatbot provides general guidance only and does not give legal advice or official decisions.</div>`;
+        }
+
+        if (containsAny(text, ["open today", "is the embassy open", "are you open today", "office open today", "bukas ba", "open ba"])) {
+          const today = new Date();
+          const todayIso = getTodayISO();
+          const holiday = getHolidayByDate(todayIso);
+
+          if (holiday) {
+            return currentLang === "fil"
+              ? `Ang Embahada ay <strong>sarado ngayon</strong> dahil sa <strong>${holiday.label}</strong>.<br><br>
+Petsa: <strong>${holiday.date}</strong><br>
+Sarado rin ang Embahada tuwing weekend.`
+              : `The Embassy is <strong>closed today</strong> because of <strong>${holiday.label}</strong>.<br><br>
+Date: <strong>${holiday.date}</strong><br>
+The Embassy is also closed on weekends.`;
+          }
+
+          if (isWeekend(today)) {
+            return currentLang === "fil"
+              ? `Ngayon ay <strong>weekend</strong>, kaya ang Embahada ay karaniwang <strong>sarado</strong>.<br><br>
+<strong>Office hours</strong><br>${embassyInfo.officeHours}<br><br>
+<strong>Consular hours</strong><br>${embassyInfo.consularHours}`
+              : `Today is a <strong>weekend</strong>, so the Embassy is generally <strong>closed</strong>.<br><br>
+<strong>Office hours</strong><br>${embassyInfo.officeHours}<br><br>
+<strong>Consular hours</strong><br>${embassyInfo.consularHours}`;
+          }
+
+          return currentLang === "fil"
+            ? `Ang araw na ito ay hindi tumutugma sa built-in 2026 holiday list, kaya ang Embahada ay karaniwang <strong>bukas sa regular na working day</strong>.<br><br>
+<strong>Office hours</strong><br>${embassyInfo.officeHours}<br><br>
+<strong>Consular hours</strong><br>${embassyInfo.consularHours}`
+            : `Today does not match a built-in 2026 holiday entry, so the Embassy is generally <strong>open on a regular working day</strong>.<br><br>
+<strong>Office hours</strong><br>${embassyInfo.officeHours}<br><br>
+<strong>Consular hours</strong><br>${embassyInfo.consularHours}`;
+        }
+
+        if (containsAny(text, ["holiday", "holidays", "closed", "office closed", "sarado", "holiday list"])) {
+          return currentLang === "fil"
+            ? `<strong>Opisyal na public holidays na inoobserbahan ng Philippine Embassy Prague sa 2026</strong>
+<ul class="holiday-list">
+  ${formatHolidayList()}
+</ul>
+<div class="mini-note">Sarado rin ang Embahada tuwing weekend.</div>`
+            : `<strong>Official public holidays observed by the Philippine Embassy Prague in 2026</strong>
+<ul class="holiday-list">
+  ${formatHolidayList()}
+</ul>
+<div class="mini-note">The Embassy is also closed on weekends.</div>`;
+        }
+
+        if (containsAny(text, ["register", "registration", "online registration", "presence", "rehistro", "magrehistro"])) {
+          return currentLang === "fil"
+            ? `Ang mga Pilipinong naninirahan sa <strong>Czech Republic</strong> ay hinihikayat na magparehistro sa Embahada.<br><br>
+<strong>Bakit mahalagang magparehistro</strong>
+<ul class="list">
+  <li>Para madaling makontak ng Embahada sa oras ng emergency</li>
+  <li>Para mas maayos ang pagbibigay ng consular at assistance services</li>
+  <li>Para updated ang records ng Embahada</li>
+</ul>
+Gamitin ang opisyal na registration page:<br>
+<a href="${embassyInfo.registrationLink}" target="_blank" rel="noreferrer">Embassy Registration</a>`
+            : `Filipinos living in the <strong>Czech Republic</strong> are encouraged to register with the Embassy.<br><br>
+<strong>Why register</strong>
+<ul class="list">
+  <li>To help the Embassy contact Filipinos during emergencies</li>
+  <li>To support more effective consular and assistance services</li>
+  <li>To help keep Embassy records updated</li>
+</ul>
+Use the official registration page here:<br>
+<a href="${embassyInfo.registrationLink}" target="_blank" rel="noreferrer">Embassy Registration</a>`;
+        }
+
+        if (containsAny(text, ["passport", "renew passport", "lost passport", "travel document", "passport renewal"])) {
+          return currentLang === "fil"
+            ? `Para sa passport renewal, lost passport guidance, at travel document information, gamitin ang opisyal na passport page ng Embahada:<br><br>
+<a href="${embassyInfo.passportUrl}" target="_blank" rel="noreferrer">Passport Services</a><br><br>
+Maaari ring direktang makipag-ugnayan sa Embahada para sa case-specific guidance.`
+            : `For passport renewal, lost passport guidance, and travel document information, please use the Embassy's official passport page:<br><br>
+<a href="${embassyInfo.passportUrl}" target="_blank" rel="noreferrer">Passport Services</a><br><br>
+You may also contact the Embassy directly for case-specific guidance.`;
+        }
+
+        if (containsAny(text, ["visa"])) {
+          return currentLang === "fil"
+            ? `Para sa visa requirements at visa-related guidance, tingnan ang opisyal na visa page:<br><br>
+<a href="${embassyInfo.visaUrl}" target="_blank" rel="noreferrer">Visa Services</a>`
+            : `For visa requirements and visa-related guidance, please check the official visa page:<br><br>
+<a href="${embassyInfo.visaUrl}" target="_blank" rel="noreferrer">Visa Services</a>`;
+        }
+
+        if (containsAny(text, ["civil registry", "birth", "marriage", "death", "report of birth", "report of marriage"])) {
+          return currentLang === "fil"
+            ? `Para sa civil registry services, gamitin ang opisyal na civil registry page:<br><br>
+<a href="${embassyInfo.civilRegistryUrl}" target="_blank" rel="noreferrer">Civil Registry Services</a><br><br>
+Kadalasang kabilang dito ang:
+<ul class="list">
+  <li>Report of Birth</li>
+  <li>Report of Marriage</li>
+  <li>Marriage at the Embassy</li>
+  <li>Certificate for Legal Capacity to Get Married before Czech Authorities</li>
+</ul>`
+            : `For civil registry services, please use the official civil registry page:<br><br>
+<a href="${embassyInfo.civilRegistryUrl}" target="_blank" rel="noreferrer">Civil Registry Services</a><br><br>
+This usually includes matters such as:
+<ul class="list">
+  <li>Report of Birth</li>
+  <li>Report of Marriage</li>
+  <li>Marriage at the Embassy</li>
+  <li>Certificate for Legal Capacity to Get Married before Czech Authorities</li>
+</ul>`;
+        }
+
+        if (containsAny(text, ["forms", "affidavit", "spa", "special power of attorney", "notarial", "notary", "nbi"])) {
+          return currentLang === "fil"
+            ? `Para sa affidavits, SPA, at iba pang downloadable consular forms, tingnan ang Embassy forms page:<br><br>
+<a href="${embassyInfo.formsUrl}" target="_blank" rel="noreferrer">Embassy Forms</a>`
+            : `For affidavits, SPA, and other downloadable consular forms, please check the Embassy forms page:<br><br>
+<a href="${embassyInfo.formsUrl}" target="_blank" rel="noreferrer">Embassy Forms</a>`;
+        }
+
+        if (containsAny(text, ["hours", "office hour", "consular hour", "oras", "bukas"])) {
+          return currentLang === "fil"
+            ? `<strong>Office hours ng Embahada</strong><br>${embassyInfo.officeHours}<br><br>
+<strong>Consular hours</strong><br>${embassyInfo.consularHours}<br><br>
+Sarado rin ang Embahada tuwing weekend at opisyal na public holidays.`
+            : `<strong>Embassy office hours</strong><br>${embassyInfo.officeHours}<br><br>
+<strong>Consular hours</strong><br>${embassyInfo.consularHours}<br><br>
+The Embassy is also closed on weekends and on official public holidays.`;
+        }
+
+        if (containsAny(text, ["address", "location", "where", "map", "contact", "phone", "number", "email", "kontak", "address ng embassy"])) {
+          return currentLang === "fil"
+            ? `<strong>${embassyInfo.name}</strong><br>
+${embassyInfo.address}<br><br>
+<strong>Saklaw</strong><br>${embassyInfo.coverage.join(", ")}<br><br>
+<strong>Contact details</strong><br>
+Phone 1: ${embassyInfo.phones.general1}<br>
+Phone 2: ${embassyInfo.phones.general2}<br>
+Fax: ${embassyInfo.phones.fax}<br>
+Email: <a href="mailto:${embassyInfo.phones.email}">${embassyInfo.phones.email}</a><br><br>
+Official website: <a href="${embassyInfo.website}" target="_blank" rel="noreferrer">${embassyInfo.website}</a>`
+            : `<strong>${embassyInfo.name}</strong><br>
+${embassyInfo.address}<br><br>
+<strong>Coverage</strong><br>${embassyInfo.coverage.join(", ")}<br><br>
+<strong>Contact details</strong><br>
+Phone 1: ${embassyInfo.phones.general1}<br>
+Phone 2: ${embassyInfo.phones.general2}<br>
+Fax: ${embassyInfo.phones.fax}<br>
+Email: <a href="mailto:${embassyInfo.phones.email}">${embassyInfo.phones.email}</a><br><br>
+Official website: <a href="${embassyInfo.website}" target="_blank" rel="noreferrer">${embassyInfo.website}</a>`;
+        }
+
+        return currentLang === "fil"
+          ? `Maaari akong tumulong sa mga paksang ito:
+<ul class="list">
+  <li>Embassy registration sa Czech Republic</li>
+  <li>Passport at visa information</li>
+  <li>Civil registry services</li>
+  <li>Forms at pangkalahatang consular guidance</li>
+  <li>Office hours, holiday closures, at contact details</li>
+</ul>
+Ang chatbot na ito ay nagbibigay lamang ng pangkalahatang gabay at hindi legal advice o opisyal na pasya.`
+          : `I can help with these topics:
+<ul class="list">
+  <li>Embassy registration in the Czech Republic</li>
+  <li>Passport and visa information</li>
+  <li>Civil registry services</li>
+  <li>Forms and general consular guidance</li>
+  <li>Office hours, holiday closures, and contact details</li>
+</ul>
+This chatbot provides general guidance only and does not provide legal advice or official decisions.`;
+      }
+
+      function sendMessage(prefilled) {
+        const text = (prefilled || inputEl.value || "").trim();
+        if (!text) return;
+        addMessage("user", text);
+        inputEl.value = "";
+        window.setTimeout(function () {
+          addMessage("assistant", answerFor(text));
+        }, 120);
+      }
+
+      function resetChat() {
+        messagesEl.innerHTML = "";
+        addMessage("assistant", t().welcomeMessage);
+      }
+
+      function setLanguage(lang) {
+        currentLang = lang;
+        renderStaticText();
+        resetChat();
+      }
+
+      sendBtn.onclick = function () {
+        sendMessage();
+      };
+
+      resetBtn.onclick = function () {
+        resetChat();
+      };
+
+      langEnBtn.onclick = function () {
+        setLanguage("en");
+      };
+
+      langFilBtn.onclick = function () {
+        setLanguage("fil");
+      };
+
+      inputEl.addEventListener("keydown", function (event) {
+        if (event.key === "Enter" && !event.shiftKey) {
+          event.preventDefault();
+          sendMessage();
+        }
+      });
+
+      renderStaticText();
+      resetChat();
+    });
+  </script>
+</body>
+</html>
