@@ -71,32 +71,14 @@
       margin-bottom: 20px;
     }
 
-    .seal {
-      width: 80px;
-      height: 80px;
-      min-width: 80px;
-      min-height: 80px;
-      border-radius: 50%;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background:
-        radial-gradient(circle at 30% 30%, rgba(255,255,255,0.99) 0%, rgba(248,250,253,0.95) 70%, rgba(243,246,250,0.90) 100%);
-      box-shadow:
-        0 0 0 4px rgba(255,255,255,0.98),
-        0 0 0 8px rgba(252, 209, 22, 0.34),
-        0 0 26px rgba(252, 209, 22, 0.28),
-        0 12px 24px rgba(0,0,0,0.14);
-      flex-shrink: 0;
-    }
-
     .seal-logo {
-      width: 130px;
-      height: 130px;
-      object-fit: contain;
-      display: block;
+     width: 120px;
+     height:120px;
+     object-fit: contain;
+     display: block;
+     border-radius: 50%;
+     box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+     flex-shrink: 0;
     }
 
     .brand-title {
@@ -461,16 +443,9 @@
       .message { max-width: 100%; }
       .headline h2 { font-size: 26px; }
 
-      .seal {
-        width: 80px;
-        height: 88px;
-        min-width: 80px;
-        min-height: 80px;
-      }
-
       .seal-logo {
-        width: 100px;
-        height: 100px;
+        width: 92px;
+        height: 92px;
       }
     }
   </style>
@@ -483,9 +458,7 @@
           <div class="flag"></div>
 
           <div class="brand">
-            <div class="seal">
-              <img src="PH Embassy Logo EN.png" alt="Embassy of the Republic of the Philippines Prague" class="seal-logo">
-            </div>
+             <img src="PH Embassy Logo EN.png" alt="Embassy of the Republic of the Philippines Prague" class="seal-logo">
             <div class="brand-title">
               <h1 id="sidebarTitle">Philippine Embassy Prague</h1>
               <p id="sidebarSubtitle">Czech Republic consular guidance</p>
