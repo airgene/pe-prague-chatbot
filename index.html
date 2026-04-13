@@ -86,6 +86,7 @@
         0 12px 24px rgba(0,0,0,0.14);
       flex-shrink: 0;
       transition: transform 0.18s ease, box-shadow 0.18s ease;
+      overflow: hidden;
     }
 
     .seal:hover {
@@ -98,10 +99,11 @@
     }
 
     .seal-logo {
-      width: 150px;
-      height: 150px;
+      width: 100%;
+      height: 100%;
       object-fit: contain;
       display: block;
+      padding: 6px;
     }
 
     .brand-title {
@@ -126,7 +128,13 @@
     .flag {
       height: 10px;
       border-radius: 999px;
-      background: linear-gradient(90deg, var(--blue) 0 44%, white 44% 56%, var(--red) 56% 100%);
+      background: linear-gradient(
+        90deg,
+        var(--blue) 0 40%,
+        #ffffff 40% 50%,
+        var(--yellow) 50% 60%,
+        var(--red) 60% 100%
+      );
       border: 1px solid #d8e1ee;
       margin-bottom: 16px;
     }
@@ -461,13 +469,14 @@
       .headline h2 { font-size: 26px; }
 
       .seal {
-        width: 120px;
-        height: 120px;
+        width: 90px;
+        height: 90px;
       }
 
       .seal-logo {
-        width: 54px;
-        height: 54px;
+        width: 100%;
+        height: 100%;
+        padding: 5px;
       }
     }
   </style>
@@ -544,7 +553,7 @@
 
           <div class="composer">
             <div class="composer-row">
-              <textarea id="input" placeholder="Ask about registration, passport renewal, ATN, OWWA, MWO Prague, holidays, office hours, or embassy contact details..."></textarea>
+              <textarea id="input" placeholder="Ask about registration, passport renewal, ATN, OWWA, MWO Prague, overseas voters registration, holidays, office hours, or embassy contact details..."></textarea>
               <button class="send" id="sendBtn" type="button">Send</button>
             </div>
             <div class="foot" id="footText">
@@ -578,6 +587,8 @@
         visaUrl: "https://praguepe.dfa.gov.ph/visa-and-consular-services/visa",
         civilRegistryUrl: "https://praguepe.dfa.gov.ph/visa-and-consular-services/civil-registry",
         formsUrl: "https://praguepe.dfa.gov.ph/visa-and-consular-services/forms",
+        overseasVotingUrl: "https://praguepe.dfa.gov.ph/110-election/777-overseas-voters-registration",
+        overseasVotingFormUrl: "https://irehistro.comelec.gov.ph/ovf1",
         mwoPrague: {
           website: "https://www.mwo-prague.org/",
           facebook: "https://www.facebook.com/MWOPrague?ref=embed_page",
@@ -625,7 +636,7 @@
           badge2: "General Guidance Only",
           badge3: "Weekends and Holidays Closed",
           chipsLabel: "Quick questions",
-          inputPlaceholder: "Ask about registration, passport renewal, ATN, OWWA, MWO Prague, holidays, office hours, or embassy contact details...",
+          inputPlaceholder: "Ask about registration, passport renewal, ATN, OWWA, MWO Prague, overseas voters registration, holidays, office hours, or embassy contact details...",
           sendBtn: "Send",
           resetBtn: "Reset chat",
           footText: "This assistant provides general guidance only. It does not provide legal advice or official decisions. For emergencies or case-specific concerns, contact the Embassy directly.",
@@ -635,6 +646,7 @@
             "What is Assistance to Nationals?",
             "How do I contact MWO Prague?",
             "How do I renew my OWWA membership?",
+            "How do I register as an overseas voter?",
             "What civil registry services are available?",
             "What forms are available?",
             "What are the embassy office hours?",
@@ -647,6 +659,7 @@
             { icon: "📘", text: "Passport services" },
             { icon: "🛟", text: "ATN / emergency guidance" },
             { icon: "👷", text: "MWO Prague and OWWA support" },
+            { icon: "🗳️", text: "Overseas voters registration" },
             { icon: "📄", text: "Civil registry" },
             { icon: "✍️", text: "Forms and notarial guidance" }
           ],
@@ -658,6 +671,7 @@ I can help with:
 • Passport renewal appointments and passport guidance
 • Assistance to Nationals (ATN) for urgent cases
 • MWO Prague and OWWA membership / renewal information
+• Overseas voters registration information
 • Civil registry services
 • Forms and consular guidance
 • Embassy office hours, holidays, and contact details
@@ -667,6 +681,7 @@ Quick guide:
 - Emergency or welfare case → ATN / contact the Embassy
 - Passport renewal → Passport appointment and passport page
 - OWWA concerns or OFW labor concerns → MWO Prague
+- Overseas voting / voter registration → Overseas Voters Registration
 - Birth, marriage, and other civil registry matters → Civil Registry page
 - Affidavits and related documents → Forms page
 - Holidays and office schedule → Ask about holiday closures`,
@@ -686,7 +701,7 @@ Quick guide:
           badge2: "Pangkalahatang Gabay Lamang",
           badge3: "Sarado tuwing Weekend at Holidays",
           chipsLabel: "Mga mabilis na tanong",
-          inputPlaceholder: "Magtanong tungkol sa registration, passport renewal, ATN, OWWA, MWO Prague, holidays, office hours, o contact details ng embahada...",
+          inputPlaceholder: "Magtanong tungkol sa registration, passport renewal, ATN, OWWA, MWO Prague, overseas voters registration, holidays, office hours, o contact details ng embahada...",
           sendBtn: "Ipadala",
           resetBtn: "I-reset ang chat",
           footText: "Ang assistant na ito ay nagbibigay lamang ng pangkalahatang gabay. Hindi ito nagbibigay ng legal advice o opisyal na pasya. Para sa emergency o partikular na kaso, makipag-ugnayan agad sa Embahada.",
@@ -696,6 +711,7 @@ Quick guide:
             "Ano ang Assistance to Nationals?",
             "Paano ko kokontakin ang MWO Prague?",
             "Paano ako magre-renew ng OWWA membership?",
+            "Paano ako magparehistro bilang overseas voter?",
             "Anong civil registry services ang available?",
             "Anong mga forms ang available?",
             "Ano ang office hours ng embahada?",
@@ -708,6 +724,7 @@ Quick guide:
             { icon: "📘", text: "Passport services" },
             { icon: "🛟", text: "ATN / emergency guidance" },
             { icon: "👷", text: "MWO Prague at OWWA support" },
+            { icon: "🗳️", text: "Overseas voters registration" },
             { icon: "📄", text: "Civil registry" },
             { icon: "✍️", text: "Forms at notarial guidance" }
           ],
@@ -719,6 +736,7 @@ Maaari akong tumulong sa:
 • Passport renewal appointment at passport guidance
 • Assistance to Nationals (ATN) para sa mga agarang kaso
 • Impormasyon tungkol sa MWO Prague at OWWA membership / renewal
+• Impormasyon tungkol sa overseas voters registration
 • Civil registry services
 • Forms at consular guidance
 • Office hours, holidays, at contact details ng Embahada
@@ -728,6 +746,7 @@ Mabilis na gabay:
 - Emergency o welfare case → ATN / kontakin ang Embahada
 - Passport renewal → Passport appointment at passport page
 - OWWA o labor concerns ng OFW → MWO Prague
+- Overseas voting / voter registration → Overseas Voters Registration
 - Birth, marriage, at iba pang civil registry matters → Civil Registry page
 - Affidavits at kaugnay na dokumento → Forms page
 - Holidays at office schedule → Magtanong tungkol sa holiday closures`,
@@ -917,8 +936,7 @@ Email: <a href="mailto:${embassyInfo.phones.email}">${embassyInfo.phones.email}<
           "passport renewal appointment", "how do i renew my passport",
           "how do i get a passport appointment", "renew passport",
           "passport renewal", "passport appointment system",
-          "passport schedule", "kukuha ng passport appointment",
-          "passport renewal appointment"
+          "passport schedule", "kukuha ng passport appointment"
         ])) {
           return currentLang === "fil"
             ? `Para sa <strong>passport renewal</strong>, kailangang kumuha ng appointment sa DFA Online Passport Appointment System at tingnan muna ang passport requirements page ng Philippine Embassy in Prague.<br><br>
@@ -1018,6 +1036,40 @@ Phone: ${embassyInfo.mwoPrague.phone}<br>
 Email 1: <a href="mailto:${embassyInfo.mwoPrague.email1}">${embassyInfo.mwoPrague.email1}</a><br>
 Email 2: <a href="mailto:${embassyInfo.mwoPrague.email2}">${embassyInfo.mwoPrague.email2}</a><br><br>
 <div class="mini-note">According to the official MWO Prague page, applicants may renew by walk-in and may also use the mobile app option if unable to visit the office in person.</div>`;
+        }
+
+        if (containsAny(text, [
+          "overseas voter", "overseas voters", "overseas voting",
+          "voter registration", "register as overseas voter",
+          "register to vote", "ov registration", "comelec registration",
+          "overseas voters registration", "magparehistro bilang overseas voter",
+          "rehistro para bumoto", "overseas voter registration"
+        ])) {
+          return currentLang === "fil"
+            ? `Ang <strong>Overseas Voters Registration</strong> ay para sa mga kwalipikadong Pilipinong nasa ibang bansa na nais bumoto sa Philippine elections.<br><br>
+<strong>Pangkalahatang proseso</strong>
+<ul class="list">
+  <li>Bisitahin ang official overseas voters registration page ng Philippine Embassy in Prague</li>
+  <li>Gamitin ang COMELEC overseas voter registration form</li>
+  <li>Ihanda ang inyong valid Philippine passport at iba pang hinihinging requirements</li>
+  <li>Sundin ang instructions ng Embassy / COMELEC para sa filing ng application</li>
+</ul>
+<strong>Official links</strong><br>
+Prague Embassy overseas voters page: <a href="${embassyInfo.overseasVotingUrl}" target="_blank" rel="noreferrer">Overseas Voters Registration</a><br>
+COMELEC overseas voter form: <a href="${embassyInfo.overseasVotingFormUrl}" target="_blank" rel="noreferrer">iRehistro OVF1</a><br><br>
+<div class="mini-note">Para sa official requirements at instructions, basahin nang mabuti ang Embassy at COMELEC pages bago magsumite ng application.</div>`
+            : `The <strong>Overseas Voters Registration</strong> process is for qualified Filipinos abroad who wish to vote in Philippine elections.<br><br>
+<strong>General process</strong>
+<ul class="list">
+  <li>Visit the official overseas voters registration page of the Philippine Embassy in Prague</li>
+  <li>Use the COMELEC overseas voter registration form</li>
+  <li>Prepare your valid Philippine passport and other required documents</li>
+  <li>Follow the Embassy / COMELEC instructions for filing your application</li>
+</ul>
+<strong>Official links</strong><br>
+Prague Embassy overseas voters page: <a href="${embassyInfo.overseasVotingUrl}" target="_blank" rel="noreferrer">Overseas Voters Registration</a><br>
+COMELEC overseas voter form: <a href="${embassyInfo.overseasVotingFormUrl}" target="_blank" rel="noreferrer">iRehistro OVF1</a><br><br>
+<div class="mini-note">Please review the Embassy and COMELEC pages carefully for official requirements and instructions before submitting your application.</div>`;
         }
 
         if (containsAny(text, ["open today", "is the embassy open", "are you open today", "office open today", "bukas ba", "open ba"])) {
@@ -1177,6 +1229,7 @@ Official website: <a href="${embassyInfo.website}" target="_blank" rel="noreferr
   <li>Passport renewal appointment at passport information</li>
   <li>Assistance to Nationals (ATN) para sa urgent cases</li>
   <li>MWO Prague at OWWA membership / renewal</li>
+  <li>Overseas voters registration</li>
   <li>Civil registry services</li>
   <li>Forms at pangkalahatang consular guidance</li>
   <li>Office hours, holiday closures, at contact details</li>
@@ -1188,6 +1241,7 @@ Ang chatbot na ito ay nagbibigay lamang ng pangkalahatang gabay at hindi legal a
   <li>Passport renewal appointments and passport information</li>
   <li>Assistance to Nationals (ATN) for urgent cases</li>
   <li>MWO Prague and OWWA membership / renewal</li>
+  <li>Overseas voters registration</li>
   <li>Civil registry services</li>
   <li>Forms and general consular guidance</li>
   <li>Office hours, holiday closures, and contact details</li>
